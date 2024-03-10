@@ -65,11 +65,11 @@ export class ArtistService {
       }
     });
   
-    /*this.dbService.albums.forEach(album => {
+    this.dbService.albums.forEach(album => {
       if (album.artistId === id) {
         album.artistId = null;
       }
-    });*/
+    });
   
     this.dbService.artists.splice(index, 1);
   }
