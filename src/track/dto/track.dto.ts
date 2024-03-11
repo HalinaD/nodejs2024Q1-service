@@ -1,4 +1,4 @@
-interface TrackDto {
+export interface TrackDto {
   id: string;
   name: string;
   artistId: string | null;

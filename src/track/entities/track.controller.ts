@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpException, HttpStatus, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  HttpException,
+  HttpStatus,
+  HttpCode,
+} from '@nestjs/common';
 import { CreateTrackDto } from '../dto/createTrack.dto';
 import { UpdateTrackDto } from '../dto/updateTrack.dto';
 import { TrackService } from './track.service';
@@ -25,9 +36,12 @@ export class TrackController {
 
   @Post()
   async create(@Body() createTrackDto: CreateTrackDto) {
-    const { name, artistId, albumId, duration } = createTrackDto;
+    const { name, duration } = createTrackDto;
     if (!name || !duration) {
-      throw new HttpException('Name and duration are required', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Name and duration are required',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.trackService.create(createTrackDto);
   }
@@ -41,7 +55,10 @@ export class TrackController {
       throw new HttpException('Invalid track ID', HttpStatus.BAD_REQUEST);
     }
     if (!updateTrackDto || !updateTrackDto.name || !updateTrackDto.duration) {
-      throw new HttpException('Name and duration are required', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Name and duration are required',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.trackService.updateTrack(id, updateTrackDto);
   }

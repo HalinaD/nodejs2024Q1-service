@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateArtistDto } from '../dto/createArtist.dto';
 import { UpdateArtistDto } from '../dto/updateArtist.dto';
 import { ArtistDto } from '../dto/artist.dto';
@@ -18,7 +22,7 @@ export class ArtistService {
   }
 
   async findOne(id: string): Promise<ArtistDto> {
-    const artist = this.dbService.artists.find(u => u.id === id);
+    const artist = this.dbService.artists.find((u) => u.id === id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
@@ -42,35 +46,35 @@ export class ArtistService {
   async updateArtist(id: string, updateArtistDto: UpdateArtistDto) {
     const artist = this.dbService.artists.find((artist) => artist.id === id);
     if (!artist) {
-        throw new NotFoundException('Artist not found');
+      throw new NotFoundException('Artist not found');
     }
     if (updateArtistDto.name !== undefined) {
-        artist.name = updateArtistDto.name;
+      artist.name = updateArtistDto.name;
     }
     if (updateArtistDto.grammy !== undefined) {
-        artist.grammy = updateArtistDto.grammy;
+      artist.grammy = updateArtistDto.grammy;
     }
     return artist;
   }
 
   async remove(id: string): Promise<void> {
-    const index = this.dbService.artists.findIndex(u => u.id === id);
+    const index = this.dbService.artists.findIndex((u) => u.id === id);
     if (index === -1) {
       throw new NotFoundException('Artist not found');
     }
 
-    this.dbService.tracks.forEach(track => {
+    this.dbService.tracks.forEach((track) => {
       if (track.artistId === id) {
         track.artistId = null;
       }
     });
-  
-    this.dbService.albums.forEach(album => {
+
+    this.dbService.albums.forEach((album) => {
       if (album.artistId === id) {
         album.artistId = null;
       }
     });
-  
+
     this.dbService.artists.splice(index, 1);
   }
 }

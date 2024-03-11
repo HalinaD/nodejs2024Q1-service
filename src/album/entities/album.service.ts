@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { CreateAlbumDto } from '../dto/createAlbum.dto';
 import { UpdateAlbumDto } from '../dto/updateAlbum.dto';
 import { AlbumDto } from '../dto/album.dto';
@@ -10,11 +14,16 @@ export class AlbumService {
   constructor(private readonly dbService: DbService) {}
 
   async findAll(): Promise<AlbumDto[]> {
-    return this.dbService.albums.map(({ id, name, year, artistId }) => ({ id, name, year, artistId }));
+    return this.dbService.albums.map(({ id, name, year, artistId }) => ({
+      id,
+      name,
+      year,
+      artistId,
+    }));
   }
 
   async findOne(id: string): Promise<AlbumDto> {
-    const album = this.dbService.albums.find(u => u.id === id);
+    const album = this.dbService.albums.find((u) => u.id === id);
     if (!album) {
       throw new NotFoundException('Album not found');
     }
@@ -34,8 +43,11 @@ export class AlbumService {
     return newAlbum;
   }
 
-  async updateAlbum(id: string, updateAlbumDto: UpdateAlbumDto): Promise<AlbumDto> {
-    const albumIndex = this.dbService.albums.findIndex(a => a.id === id);
+  async updateAlbum(
+    id: string,
+    updateAlbumDto: UpdateAlbumDto,
+  ): Promise<AlbumDto> {
+    const albumIndex = this.dbService.albums.findIndex((a) => a.id === id);
     if (albumIndex === -1) {
       throw new NotFoundException('Album not found');
     } else {
@@ -43,7 +55,8 @@ export class AlbumService {
         id,
         name: updateAlbumDto.name ?? this.dbService.albums[albumIndex].name,
         year: updateAlbumDto.year ?? this.dbService.albums[albumIndex].year,
-        artistId: updateAlbumDto.artistId ?? this.dbService.albums[albumIndex].artistId,
+        artistId:
+          updateAlbumDto.artistId ?? this.dbService.albums[albumIndex].artistId,
       };
       this.dbService.albums[albumIndex] = updatedAlbum;
       return updatedAlbum;
@@ -51,11 +64,11 @@ export class AlbumService {
   }
 
   async remove(id: string): Promise<void> {
-    const index = this.dbService.albums.findIndex(u => u.id === id);
+    const index = this.dbService.albums.findIndex((u) => u.id === id);
     if (index === -1) {
       throw new NotFoundException('Album not found');
     }
-        this.dbService.tracks.forEach(track => {
+    this.dbService.tracks.forEach((track) => {
       if (track.albumId === id) {
         track.albumId = null;
       }

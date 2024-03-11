@@ -1,4 +1,16 @@
-import { Controller, Get, Post, Put, Delete, Param, Body, HttpException, HttpStatus, HttpCode, ParseUUIDPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Put,
+  Delete,
+  Param,
+  Body,
+  HttpException,
+  HttpStatus,
+  HttpCode,
+  ParseUUIDPipe,
+} from '@nestjs/common';
 import { CreateArtistDto } from '../dto/createArtist.dto';
 import { UpdateArtistDto } from '../dto/updateArtist.dto';
 import { ArtistService } from './artist.service';
@@ -27,7 +39,10 @@ export class ArtistController {
   async create(@Body() createArtistDto: CreateArtistDto) {
     const { name, grammy } = createArtistDto;
     if (!name || !grammy) {
-      throw new HttpException('Name and grammy are required', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Name and grammy are required',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return this.artistService.create(createArtistDto);
   }
