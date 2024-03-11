@@ -3,6 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
+  const port = process.env.PORT || 4000;
   const app = await NestFactory.create(AppModule);
   const options = new DocumentBuilder()
     .setTitle('Home Library Service')
@@ -13,7 +14,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
 
-  await app.listen(4000);
-  console.log(`Server started on ${await app.getUrl()}`);
+  await app.listen(port);
+  console.log(`Server started on port ${port}`);
 }
 bootstrap();

@@ -13,6 +13,8 @@ git clone {repository URL}
 
 ## Installing NPM modules
 
+Create a `.env` file and copy the contents from the `.env.example` file (PORT=4000) 
+
 ```
 npm install
 ```
