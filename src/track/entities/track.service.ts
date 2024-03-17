@@ -5,28 +5,28 @@ import {
 } from '@nestjs/common';
 import { CreateTrackDto } from '../dto/createTrack.dto';
 import { UpdateTrackDto } from '../dto/updateTrack.dto';
-import { DbService } from '../../db/db.service';
-import { v4 as uuidv4 } from 'uuid';
 import { TrackDto } from '../dto/track.dto';
+import { PrismaService } from '../../prisma/prisma.service';
 
 @Injectable()
 export class TrackService {
-  constructor(private readonly dbService: DbService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
   async findAll(): Promise<TrackDto[]> {
-    return this.dbService.tracks.map(
-      ({ id, name, artistId, albumId, duration }) => ({
-        id,
-        name,
-        artistId,
-        albumId,
-        duration,
-      }),
-    );
+    const tracks = await this.prisma.client.track.findMany();
+    return tracks.map(track => ({
+      id: track.id,
+      name: track.name,
+      artistId: track.artistId ?? null,
+      albumId: track.albumId ?? null,
+      duration: track.duration,
+    }));
   }
 
   async findOne(id: string): Promise<TrackDto> {
-    const track = this.dbService.tracks.find((u) => u.id === id);
+    const track = await this.prisma.client.track.findUnique({
+      where: { id },
+    });
     if (!track) {
       throw new NotFoundException('Track not found');
     }
@@ -38,45 +38,35 @@ export class TrackService {
     if (!name || !duration) {
       throw new BadRequestException('Name and duration are required');
     }
-    const newTrack: TrackDto = {
-      id: uuidv4(),
-      name,
-      artistId,
-      albumId,
-      duration,
-    };
-    this.dbService.tracks.push(newTrack);
+    const newTrack = await this.prisma.client.track.create({
+      data: {
+        name,
+        artistId,
+        albumId,
+        duration,
+      },
+    });
     return newTrack;
   }
 
-  async updateTrack(
-    id: string,
-    updateTrackDto: UpdateTrackDto,
-  ): Promise<TrackDto> {
-    const { name, artistId, albumId, duration } = updateTrackDto;
-    const trackIndex = this.dbService.tracks.findIndex((u) => u.id === id);
-    if (trackIndex === -1) {
+  async updateTrack(id: string, updateTrackDto: UpdateTrackDto): Promise<TrackDto> {
+    const existingTrack = await this.prisma.client.track.findUnique({ where: { id } });
+    if (!existingTrack) {
       throw new NotFoundException('Track not found');
     }
-    if (!name || !duration) {
-      throw new BadRequestException('Name and duration are required');
-    }
-    const updatedTrack: TrackDto = {
-      id,
-      name,
-      artistId,
-      albumId,
-      duration,
-    };
-    this.dbService.tracks[trackIndex] = updatedTrack;
+    const { name, artistId, albumId, duration } = updateTrackDto;
+    const updatedTrack = await this.prisma.client.track.update({
+      where: { id },
+      data: { name, artistId, albumId, duration },
+    });
     return updatedTrack;
   }
 
   async remove(id: string): Promise<void> {
-    const index = this.dbService.tracks.findIndex((u) => u.id === id);
-    if (index === -1) {
+    const existingTrack = await this.prisma.client.track.findUnique({ where: { id } });
+    if (!existingTrack) {
       throw new NotFoundException('Track not found');
     }
-    this.dbService.tracks.splice(index, 1);
+    await this.prisma.client.track.delete({ where: { id } });
   }
 }
