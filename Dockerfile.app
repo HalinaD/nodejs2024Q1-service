@@ -9,7 +9,7 @@ COPY package*.json ./
 COPY . .
 
 
-EXPOSE 4000
+EXPOSE ${PORT}
 
 
 CMD [ "npm", "start" ]
