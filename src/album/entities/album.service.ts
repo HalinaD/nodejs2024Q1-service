@@ -5,7 +5,7 @@ import {
 import { CreateAlbumDto } from '../dto/createAlbum.dto';
 import { UpdateAlbumDto } from '../dto/updateAlbum.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Album } from '.prisma/client';
+import { Album } from '@prisma/client';
 
 @Injectable()
 export class AlbumService {

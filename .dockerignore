@@ -1,0 +1,17 @@
+dist/
+node_modules/
+.dockerignore
+.editorconfig
+.eslintrc*
+.nvmrc
+.prettierrc*
+.vscode/
+.env
+.git/
+.github/
+.gitignore
+coverage/
+jest.config.json
+test/
+LICENSE
+*.md

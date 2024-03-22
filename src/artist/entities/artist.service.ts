@@ -5,7 +5,7 @@ import {
 import { CreateArtistDto } from '../dto/createArtist.dto';
 import { UpdateArtistDto } from '../dto/updateArtist.dto';
 import { PrismaService } from '../../prisma/prisma.service';
-import { Artist } from '.prisma/client';
+import { Artist } from '@prisma/client';
 
 @Injectable()
 export class ArtistService {
