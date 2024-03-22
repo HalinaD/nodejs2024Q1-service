@@ -14,7 +14,7 @@ export class TrackService {
 
   async findAll(): Promise<TrackDto[]> {
     const tracks = await this.prisma.client.track.findMany();
-    return tracks.map(track => ({
+    return tracks.map((track) => ({
       id: track.id,
       name: track.name,
       artistId: track.artistId ?? null,
@@ -49,8 +49,13 @@ export class TrackService {
     return newTrack;
   }
 
-  async updateTrack(id: string, updateTrackDto: UpdateTrackDto): Promise<TrackDto> {
-    const existingTrack = await this.prisma.client.track.findUnique({ where: { id } });
+  async updateTrack(
+    id: string,
+    updateTrackDto: UpdateTrackDto,
+  ): Promise<TrackDto> {
+    const existingTrack = await this.prisma.client.track.findUnique({
+      where: { id },
+    });
     if (!existingTrack) {
       throw new NotFoundException('Track not found');
     }
@@ -63,7 +68,9 @@ export class TrackService {
   }
 
   async remove(id: string): Promise<void> {
-    const existingTrack = await this.prisma.client.track.findUnique({ where: { id } });
+    const existingTrack = await this.prisma.client.track.findUnique({
+      where: { id },
+    });
     if (!existingTrack) {
       throw new NotFoundException('Track not found');
     }

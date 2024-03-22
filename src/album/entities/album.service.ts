@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateAlbumDto } from '../dto/createAlbum.dto';
 import { UpdateAlbumDto } from '../dto/updateAlbum.dto';
 import { PrismaService } from '../../prisma/prisma.service';
@@ -27,16 +24,26 @@ export class AlbumService {
     return this.prisma.client.album.create({ data: createAlbumDto });
   }
 
-  async updateAlbum(id: string, updateAlbumDto: UpdateAlbumDto): Promise<Album> {
-    const existingAlbum = await this.prisma.client.album.findUnique({ where: { id } });
+  async updateAlbum(
+    id: string,
+    updateAlbumDto: UpdateAlbumDto,
+  ): Promise<Album> {
+    const existingAlbum = await this.prisma.client.album.findUnique({
+      where: { id },
+    });
     if (!existingAlbum) {
       throw new NotFoundException('Album not found');
     }
-    return this.prisma.client.album.update({ where: { id }, data: updateAlbumDto });
+    return this.prisma.client.album.update({
+      where: { id },
+      data: updateAlbumDto,
+    });
   }
 
   async remove(id: string): Promise<void> {
-    const existingAlbum = await this.prisma.client.album.findUnique({ where: { id } });
+    const existingAlbum = await this.prisma.client.album.findUnique({
+      where: { id },
+    });
     if (!existingAlbum) {
       throw new NotFoundException('Album not found');
     }

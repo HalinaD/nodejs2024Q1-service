@@ -17,7 +17,7 @@ import { UserModule } from './user/entities/user.module';
     ArtistModule,
     AlbumModule,
     FavoritesModule,
-    PrismaModule
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
