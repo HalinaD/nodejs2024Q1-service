@@ -44,6 +44,12 @@ export class FavoritesService {
     if (!track) {
       throw new UnprocessableEntityException('Track not found');
     }
+    let favorites = await this.prisma.client.favorites.findUnique({ 
+      where: { id: 'singleton' } });
+    if (!favorites) {
+        favorites = await this.prisma.client.favorites.create({ 
+          data: { id: 'singleton' } });
+    }
     await this.prisma.client.favorites.update({
       where: { id: 'singleton' },
       data: { tracks: { push: trackId } }
@@ -68,6 +74,12 @@ export class FavoritesService {
     if (!album) {
       throw new UnprocessableEntityException('Album not found');
     }
+    let favorites = await this.prisma.client.favorites.findUnique({ 
+      where: { id: 'singleton' } });
+    if (!favorites) {
+        favorites = await this.prisma.client.favorites.create({ 
+          data: { id: 'singleton' } });
+    }
     await this.prisma.client.favorites.update({
       where: { id: 'singleton' },
       data: { albums: { push: albumId } }
@@ -91,6 +103,12 @@ export class FavoritesService {
     const artist = await this.prisma.client.artist.findUnique({ where: { id: artistId } });
     if (!artist) {
       throw new UnprocessableEntityException('Artist not found');
+    }
+    let favorites = await this.prisma.client.favorites.findUnique({ 
+      where: { id: 'singleton' } });
+    if (!favorites) {
+        favorites = await this.prisma.client.favorites.create({ 
+          data: { id: 'singleton' } });
     }
     await this.prisma.client.favorites.update({
       where: { id: 'singleton' },
