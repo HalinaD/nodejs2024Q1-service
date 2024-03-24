@@ -15,12 +15,15 @@ services:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
     networks:
       - mynetwork
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - postgres_logs:/var/log/postgresql
 
   app:
     build:
       context: .
       dockerfile: Dockerfile.app
-    environment:
+    env_file:
       - .env
     depends_on:
       - postgres
@@ -28,7 +31,13 @@ services:
       - "${PORT}:${PORT}"
     networks:
       - mynetwork
+    volumes:
+      - ./src:/app/src
 
 networks:
   mynetwork:
     driver: bridge
+
+volumes:
+  postgres_data:
+  postgres_logs:
