@@ -13,11 +13,31 @@ git clone {repository URL}
 
 ## Installing NPM modules
 
+Create a `.env` file in the root of the project and copy the contents from the `.env.example` file
+
 ```
 npm install
 ```
 
+## Docker
+  To run the application using Docker:
+```
+docker compose up
+```
+
+Scan docker images for vulnerabilities:
+
+```
+npm run docker:scan
+```
+
+After starting the app with Docker you can open 
+in your browser OpenAPI documentation by typing http://localhost:4000/doc/.
+For more information about OpenAPI/Swagger please visit https://swagger.io/.
+
 ## Running application
+
+(without Docker):
 
 ```
 npm start

@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+ENV POSTGRES_USER=${POSTGRES_USER} \
+    POSTGRES_PASSWORD=${POSTGRES_PASSWORD} \
+    POSTGRES_DB=${POSTGRES_DB}
+
+COPY ./src/prisma/migrations/20240317175233_init/migration.sql /docker-entrypoint-initdb.d/
